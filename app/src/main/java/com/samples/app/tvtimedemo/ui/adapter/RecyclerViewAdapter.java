@@ -2,7 +2,6 @@ package com.samples.app.tvtimedemo.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.samples.app.tvtimedemo.R;
-import com.samples.app.tvtimedemo.mvp.model.Result;
 import com.samples.app.tvtimedemo.util.ImageLoader;
+import com.samples.app.tvtimedemo.vo.TVShow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.samples.app.tvtimedemo.util.Constants.IMAGE_BASE_URL;
 
 /**
  * Created by $Abed Elaziz Shehadeh on 21, January, 2018
@@ -28,12 +26,12 @@ import static com.samples.app.tvtimedemo.util.Constants.IMAGE_BASE_URL;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private List<Result> data = new ArrayList<>();
+    private List<TVShow> data = new ArrayList<>();
     private ImageLoader imageLoader;
 
-    public RecyclerViewAdapter(List<Result> data, Context context) {
+    public RecyclerViewAdapter(List<TVShow> data, Context context) {
         this.data = data;
-        imageLoader = new ImageLoader(context);
+        imageLoader = new ImageLoader(context, R.drawable.placeholder);
 
     }
 
@@ -67,11 +65,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(Result result) {
-            String imageURL = IMAGE_BASE_URL + result.getBackdropPath();
-            Log.wtf("path", result.getBackdropPath());
-            imageLoader.loadImage(imageURL, imageView);
-            titleTextView.setText(result.getOriginalName());
+        public void bind(TVShow tvShow) {
+            imageLoader.loadImage(tvShow.getBackdropPath(), imageView);
+            titleTextView.setText(tvShow.getOriginalName());
         }
     }
 }

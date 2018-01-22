@@ -18,7 +18,7 @@ import static com.samples.app.tvtimedemo.util.Constants.BASE_URL;
  * elaziz.shehadeh@gmail.com
  */
 
-public class App extends Application{
+public class App extends Application {
 
     private ApplicationComponent mApplicationComponent;
 
@@ -28,12 +28,16 @@ public class App extends Application{
 
         initializeApplicationComponent();
 
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
+            /*
+            Access chrome://inspect/#devices to debug the application such as database inspection
+            and network inspection
+             */
             Stetho.initializeWithDefaults(this);
         }
 
-        if(LeakCanary.isInAnalyzerProcess(this)){
+        if (LeakCanary.isInAnalyzerProcess(this)) {
             return;
         }
     }
@@ -45,7 +49,7 @@ public class App extends Application{
                 .build();
     }
 
-    public ApplicationComponent getApplicationComponent(){
+    public ApplicationComponent getApplicationComponent() {
         return mApplicationComponent;
     }
 

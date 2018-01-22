@@ -2,18 +2,19 @@
 package com.samples.app.tvtimedemo.mvp.model;
 
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 
-@SuppressWarnings("unused")
 public class TVShowsResponse {
 
-    @SerializedName("page")
+    @JsonProperty("page")
     private Long mPage;
-    @SerializedName("results")
+    @JsonProperty("results")
     private List<Result> mResults;
-    @SerializedName("total_pages")
+    @JsonProperty("total_pages")
     private Long mTotalPages;
-    @SerializedName("total_results")
+    @JsonProperty("total_results")
     private Long mTotalResults;
 
     public Long getPage() {

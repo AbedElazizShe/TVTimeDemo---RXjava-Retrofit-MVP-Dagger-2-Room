@@ -2,6 +2,7 @@ package com.samples.app.tvtimedemo.mvp.view;
 
 import com.samples.app.tvtimedemo.mvp.model.Result;
 import com.samples.app.tvtimedemo.mvp.model.TVShowsResponse;
+import com.samples.app.tvtimedemo.vo.TVShow;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 public interface MainView extends BaseView {
 
-    void onDataLoaded(List<Result> tvShows);
+    void onDataLoaded(List<TVShow> tvShows, long page, long totalPages);
 
     void onShowDialog();
 

@@ -35,6 +35,7 @@ public class Result {
     @JsonProperty("vote_count")
     private Long mVoteCount;
 
+
     public String getBackdropPath() {
         return mBackdropPath;
     }

@@ -1,7 +1,7 @@
 package com.samples.app.tvtimedemo.ui.activity;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,13 +12,18 @@ import android.widget.Toast;
 
 import com.samples.app.tvtimedemo.R;
 import com.samples.app.tvtimedemo.base.BaseActivity;
+import com.samples.app.tvtimedemo.db.entity.TVShowsEntity;
 import com.samples.app.tvtimedemo.di.components.DaggerTVShowsComponent;
+import com.samples.app.tvtimedemo.di.module.RoomModule;
 import com.samples.app.tvtimedemo.di.module.TVShowsModule;
-import com.samples.app.tvtimedemo.mvp.model.Result;
 import com.samples.app.tvtimedemo.mvp.presenter.TVShowsPresenter;
 import com.samples.app.tvtimedemo.mvp.view.MainView;
 import com.samples.app.tvtimedemo.ui.adapter.RecyclerViewAdapter;
 import com.samples.app.tvtimedemo.util.NetworkUtil;
+import com.samples.app.tvtimedemo.util.RecyclerViewUtils;
+import com.samples.app.tvtimedemo.vm.MainViewModel;
+import com.samples.app.tvtimedemo.vm.ViewModelFactory;
+import com.samples.app.tvtimedemo.vo.TVShow;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,33 +47,63 @@ public class MainActivity extends BaseActivity implements MainView {
     @Inject
     protected TVShowsPresenter mPresenter;
 
-    private List<Result> data = new ArrayList<>();
+    private List<TVShow> data = new ArrayList<>();
 
     private RecyclerView.Adapter mAdapter;
+
+    private long mPage;
+    private long mTotalPages;
+
+    @Inject
+    protected ViewModelFactory mViewModelFactory;
+
+    private MainViewModel mMainViewModel;
 
     @Override
     protected void onViewReady(Bundle savedInstanceState, Intent intent) {
         super.onViewReady(savedInstanceState, intent);
 
+        mMainViewModel = ViewModelProviders.of(this, mViewModelFactory).get(MainViewModel.class);
+
         getToolbar(R.string.home);
         setUpTVShowsList();
-        loadTVShows();
-    }
-
-    private void loadTVShows() {
+        loadTVShows("1");
 
         if (NetworkUtil.isConnected(getApplicationContext())) {
-            String type = "tv";
+            loadMoreData();
+        }
+    }
+
+    private void loadTVShows(String page) {
+
+        if (NetworkUtil.isConnected(getApplicationContext())) {
             Map<String, String> map = new HashMap<>();
             map.put("sort_by", "popularity.desc");
-            map.put("page", "1");
+            map.put("page", page);
             map.put("api_key", TEMP_TOKEN);
-            mPresenter.getTVShows(type, map);
+            mPresenter.getTVShows("tv", map);
         } else {
-            /*
-             * Todo: Load data from offline database - ROOM will be used for that purpose
-             */
+            subscribeUi(mMainViewModel);
         }
+    }
+
+    private void subscribeUi(MainViewModel mainViewModel) {
+        mainViewModel.getTVShows().observe(this, tvShowsEntities -> {
+            if (tvShowsEntities != null) {
+                data.clear();
+                for (TVShowsEntity tvShows : tvShowsEntities) {
+                    data.add(new TVShow(
+                            tvShows.getShowId(),
+                            tvShows.getName(),
+                            tvShows.getFirstAirDate(),
+                            tvShows.getImagePath(),
+                            tvShows.getOverview()));
+                }
+            }
+        });
+        mAdapter.notifyDataSetChanged();
+
+        onHideDialog();
     }
 
     private void setUpTVShowsList() {
@@ -80,9 +115,34 @@ public class MainActivity extends BaseActivity implements MainView {
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    private void loadMoreData() {
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (RecyclerViewUtils.isLastItemDisplaying(recyclerView))
+                    if (mPage <= mTotalPages) {
+                        loadTVShows(String.valueOf(mPage));
+                    }
+            }
+        });
+    }
+
     @Override
-    public void onDataLoaded(List<Result> tvShows) {
+    public void onDataLoaded(List<TVShow> tvShows, long page, long totalPages) {
+
+        if (page == 1) {
+            onClearItems();
+        }
+
+        mPage = page + 1;
+        mTotalPages = totalPages;
+
         data.addAll(tvShows);
+
         mAdapter.notifyDataSetChanged();
     }
 
@@ -119,7 +179,14 @@ public class MainActivity extends BaseActivity implements MainView {
         DaggerTVShowsComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .tVShowsModule(new TVShowsModule(this))
+                .roomModule(new RoomModule(getApplication()))
                 .build()
                 .inject(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.unSubscribe();
     }
 }
