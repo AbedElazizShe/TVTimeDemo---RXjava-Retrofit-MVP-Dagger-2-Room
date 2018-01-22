@@ -6,7 +6,7 @@ This is a simple Android that shows a list of Popular TV Shows;
      - This project can be used as a starting point for anyone who wants to jump in Android development
 
 
-####Screenshots
+#### Screenshots
 
 ![ScreenShot](https://raw.github.com/AbedElazizShe/TVTimeDemo/master/screenshots/main_page.PNG)
 
