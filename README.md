@@ -5,9 +5,10 @@ This is a simple Android that shows a list of Popular TV Shows;
      - There will be continuous improvement from time to time.
      - This project can be used as a starting point for anyone who wants to jump in Android development
 
-##Screenshots
 
-<img src="screenshots/main_page.PNG" height="400" alt="Screenshot"/>
+####Screenshots
+
+![ScreenShot](https://raw.github.com/AbedElazizShe/TVTimeDemo/master/screenshots/main_page.PNG)
 
 #### What's next?
 
