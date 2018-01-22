@@ -7,7 +7,7 @@ This is a simple Android that shows a list of Popular TV Shows;
 
 ##Screenshots
 
-<img src="screenshots/main_page.PNG" height="400" alt="Screenshot"/> <img src="screenshots/main_page.PNG" height="400" alt="Screenshot"/>
+<img src="screenshots/main_page.PNG" height="400" alt="Screenshot"/>
 
 #### What's next?
 
