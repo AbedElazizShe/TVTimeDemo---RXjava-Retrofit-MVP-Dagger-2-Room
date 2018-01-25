@@ -17,15 +17,17 @@ public class MainViewModel extends ViewModel {
 
     private final MediatorLiveData<List<TVShowsEntity>> mObservableTVShows;
 
+
     public MainViewModel(LocalDataRepository localDataRepository) {
         this.mObservableTVShows = new MediatorLiveData<>();
         mObservableTVShows.setValue(null);
 
         LiveData<List<TVShowsEntity>> tvShows = localDataRepository.getTVShows();
         mObservableTVShows.addSource(tvShows, mObservableTVShows::setValue);
+
     }
 
-    public LiveData<List<TVShowsEntity>> getTVShows(){
+    public LiveData<List<TVShowsEntity>> getTVShows() {
         return mObservableTVShows;
     }
 }

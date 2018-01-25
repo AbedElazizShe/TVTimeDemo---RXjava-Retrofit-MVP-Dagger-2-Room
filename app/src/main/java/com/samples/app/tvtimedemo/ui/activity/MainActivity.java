@@ -3,6 +3,7 @@ package com.samples.app.tvtimedemo.ui.activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,7 +35,10 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+import static com.samples.app.tvtimedemo.util.Constants.SHOWS_CURRENT_PAGE;
+import static com.samples.app.tvtimedemo.util.Constants.SHOWS_TOTAL_PAGES;
 import static com.samples.app.tvtimedemo.util.Constants.TEMP_TOKEN;
+import static com.samples.app.tvtimedemo.util.Constants.TV_SHOWS_DATA;
 
 public class MainActivity extends BaseActivity implements MainView {
 
@@ -44,10 +48,13 @@ public class MainActivity extends BaseActivity implements MainView {
     @BindView(R.id.tvShowsList)
     protected RecyclerView mRecyclerView;
 
+    @BindView(R.id.swipeContainer)
+    protected SwipeRefreshLayout mSwipeContainer;
+
     @Inject
     protected TVShowsPresenter mPresenter;
 
-    private List<TVShow> data = new ArrayList<>();
+    private ArrayList<TVShow> data = new ArrayList<>();
 
     private RecyclerView.Adapter mAdapter;
 
@@ -67,11 +74,23 @@ public class MainActivity extends BaseActivity implements MainView {
 
         getToolbar(R.string.home);
         setUpTVShowsList();
-        loadTVShows("1");
+
+        if(savedInstanceState != null){
+            data.addAll(savedInstanceState.getParcelableArrayList(TV_SHOWS_DATA));
+            mAdapter.notifyDataSetChanged();
+            mPage = savedInstanceState.getLong(SHOWS_CURRENT_PAGE);
+            mTotalPages = savedInstanceState.getLong(SHOWS_TOTAL_PAGES);
+            onHideDialog();
+        }else {
+            loadTVShows("1");
+        }
 
         if (NetworkUtil.isConnected(getApplicationContext())) {
             loadMoreData();
         }
+
+        refreshData();
+
     }
 
     private void loadTVShows(String page) {
@@ -83,11 +102,13 @@ public class MainActivity extends BaseActivity implements MainView {
             map.put("api_key", TEMP_TOKEN);
             mPresenter.getTVShows("tv", map);
         } else {
-            subscribeUi(mMainViewModel);
+            loadOfflineTVShows(mMainViewModel);
         }
     }
 
-    private void subscribeUi(MainViewModel mainViewModel) {
+    private void loadOfflineTVShows(MainViewModel mainViewModel) {
+        onShowDialog();
+
         mainViewModel.getTVShows().observe(this, tvShowsEntities -> {
             if (tvShowsEntities != null) {
                 data.clear();
@@ -99,11 +120,11 @@ public class MainActivity extends BaseActivity implements MainView {
                             tvShows.getImagePath(),
                             tvShows.getOverview()));
                 }
+
+                mAdapter.notifyDataSetChanged();
+                onHideDialog();
             }
         });
-        mAdapter.notifyDataSetChanged();
-
-        onHideDialog();
     }
 
     private void setUpTVShowsList() {
@@ -131,6 +152,10 @@ public class MainActivity extends BaseActivity implements MainView {
         });
     }
 
+    private void refreshData() {
+        mSwipeContainer.setOnRefreshListener(() -> loadTVShows("1"));
+    }
+
     @Override
     public void onDataLoaded(List<TVShow> tvShows, long page, long totalPages) {
 
@@ -142,7 +167,6 @@ public class MainActivity extends BaseActivity implements MainView {
         mTotalPages = totalPages;
 
         data.addAll(tvShows);
-
         mAdapter.notifyDataSetChanged();
     }
 
@@ -154,6 +178,9 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     public void onHideDialog() {
         mProgressBar.setVisibility(View.GONE);
+        if (mSwipeContainer.isRefreshing()) {
+            mSwipeContainer.setRefreshing(false);
+        }
     }
 
     @Override
@@ -188,5 +215,13 @@ public class MainActivity extends BaseActivity implements MainView {
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.unSubscribe();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(TV_SHOWS_DATA, data);
+        outState.putLong(SHOWS_CURRENT_PAGE, mPage);
+        outState.putLong(SHOWS_TOTAL_PAGES, mTotalPages);
     }
 }

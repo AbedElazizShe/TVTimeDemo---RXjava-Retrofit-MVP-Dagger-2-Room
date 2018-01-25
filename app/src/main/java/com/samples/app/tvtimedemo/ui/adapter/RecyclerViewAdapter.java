@@ -1,13 +1,17 @@
 package com.samples.app.tvtimedemo.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.samples.app.tvtimedemo.R;
 import com.samples.app.tvtimedemo.util.ImageLoader;
 import com.samples.app.tvtimedemo.vo.TVShow;
@@ -60,13 +64,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @BindView(R.id.titleTextView)
         TextView titleTextView;
 
+        @BindView(R.id.progressBar)
+        ProgressBar progressBar;
+
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
         public void bind(TVShow tvShow) {
-            imageLoader.loadImage(tvShow.getBackdropPath(), imageView);
+            imageLoader.loadImage(tvShow.getBackdropPath(), imageView, new RequestListener<String, Bitmap>() {
+
+                @Override
+                public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    progressBar.setVisibility(View.GONE);
+                    return false;
+                }
+            });
             titleTextView.setText(tvShow.getOriginalName());
         }
     }

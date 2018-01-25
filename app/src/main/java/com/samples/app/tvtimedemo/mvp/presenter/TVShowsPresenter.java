@@ -52,7 +52,7 @@ public class TVShowsPresenter extends BasePresenter<MainView> implements Observe
     }
 
     public void unSubscribe() {
-        if (!mSubscription.isUnsubscribed()) {
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
             mSubscription.unsubscribe();
         }
     }
@@ -114,8 +114,11 @@ public class TVShowsPresenter extends BasePresenter<MainView> implements Observe
         tvShowsEntity.firstAirDate = result.getFirstAirDate();
         tvShowsEntity.imagePath = (IMAGE_BASE_URL + result.getBackdropPath());
         tvShowsEntity.overview = result.getOverview();
+        tvShowsEntity.popularity = result.getPopularity();
 
         mLocalDataRepository.insertTVShows(tvShowsEntity);
 
     }
+
+
 }

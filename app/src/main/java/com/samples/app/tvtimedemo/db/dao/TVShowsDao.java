@@ -22,7 +22,7 @@ public interface TVShowsDao {
     @Insert(onConflict = REPLACE)
     void insertTVShows(TVShowsEntity tvShowsEntity);
 
-    @Query("select * from tv_shows order by id limit 50 ")
+    @Query("select * from tv_shows order by popularity desc limit 50")
     LiveData<List<TVShowsEntity>> loadSavedTVShows();
 
 

@@ -15,6 +15,8 @@ import java.util.concurrent.Executor;
 import dagger.Module;
 import dagger.Provides;
 
+
+
 /**
  * Created by Abed Elaziz Shehadeh on 22, January, 2018
  * elaziz.shehadeh@gmail.com
@@ -27,6 +29,7 @@ public class RoomModule {
 
     public RoomModule(Application application) {
         this.mAppDatabase = Room.databaseBuilder(application, AppDatabase.class, "demo_db")
+                 /*.addMigrations(MIGRATION_1_2) -- in case of migration*/
                 .build();
     }
 

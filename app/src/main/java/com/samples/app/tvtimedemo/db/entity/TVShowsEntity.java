@@ -35,6 +35,9 @@ public class TVShowsEntity {
     @ColumnInfo(name = "overview")
     public String overview;
 
+    @ColumnInfo(name = "popularity")
+    public Double popularity;
+
     public Integer getId() {
         return id;
     }
@@ -81,5 +84,13 @@ public class TVShowsEntity {
 
     public void setOverview(String overview) {
         this.overview = overview;
+    }
+
+    public Double getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(Double popularity) {
+        this.popularity = popularity;
     }
 }

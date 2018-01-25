@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.BitmapRequestBuilder;
 import com.bumptech.glide.BitmapTypeRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.ModelCache;
 import com.bumptech.glide.load.model.stream.BaseGlideUrlLoader;
@@ -34,7 +35,6 @@ import com.samples.app.tvtimedemo.R;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 
 public class ImageLoader {
@@ -52,7 +52,11 @@ public class ImageLoader {
      */
     public ImageLoader(Context context) {
         VariableWidthImageLoader imageLoader = new VariableWidthImageLoader(context);
-        mGlideModelRequest = Glide.with(context).using(imageLoader).from(String.class).asBitmap();
+        mGlideModelRequest = Glide
+                .with(context)
+                .using(imageLoader)
+                .from(String.class)
+                .asBitmap();
         mCenterCrop = new CenterCrop(Glide.get(context).getBitmapPool());
     }
 
@@ -67,8 +71,9 @@ public class ImageLoader {
     /**
      * Load an image from a url into an ImageView using the default placeholder
      * drawable if available.
-     * @param url The web URL of an image.
-     * @param imageView The target ImageView to load the image into.
+     *
+     * @param url             The web URL of an image.
+     * @param imageView       The target ImageView to load the image into.
      * @param requestListener A listener to monitor the request result.
      */
     public void loadImage(String url, ImageView imageView, RequestListener<String, Bitmap> requestListener) {
@@ -78,9 +83,9 @@ public class ImageLoader {
     /**
      * Load an image from a url into an ImageView using the given placeholder drawable.
      *
-     * @param url The web URL of an image.
-     * @param imageView The target ImageView to load the image into.
-     * @param requestListener A listener to monitor the request result.
+     * @param url                 The web URL of an image.
+     * @param imageView           The target ImageView to load the image into.
+     * @param requestListener     A listener to monitor the request result.
      * @param placeholderOverride A placeholder to use in place of the default placholder.
      */
     public void loadImage(String url, ImageView imageView, RequestListener<String, Bitmap> requestListener,
@@ -91,9 +96,10 @@ public class ImageLoader {
     /**
      * Load an image from a url into an ImageView using the default placeholder
      * drawable if available.
-     * @param url The web URL of an image.
-     * @param imageView The target ImageView to load the image into.
-     * @param requestListener A listener to monitor the request result.
+     *
+     * @param url                 The web URL of an image.
+     * @param imageView           The target ImageView to load the image into.
+     * @param requestListener     A listener to monitor the request result.
      * @param placeholderOverride A drawable to use as a placeholder for this specific image.
      *                            If this parameter is present, {@link #mPlaceHolderResId}
      *                            if ignored for this request.
@@ -112,12 +118,16 @@ public class ImageLoader {
 
     private BitmapRequestBuilder beginImageLoad(String url,
                                                 RequestListener<String, Bitmap> requestListener, boolean crop) {
-        if (crop){
-            return mGlideModelRequest.load(url)
+        if (crop) {
+            return mGlideModelRequest
+                    .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .listener(requestListener)
                     .transform(mCenterCrop);
         } else {
-            return mGlideModelRequest.load(url)
+            return mGlideModelRequest
+                    .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .listener(requestListener);
         }
     }
@@ -125,7 +135,8 @@ public class ImageLoader {
     /**
      * Load an image from a url into the given image view using the default placeholder if
      * available.
-     * @param url The web URL of an image.
+     *
+     * @param url       The web URL of an image.
      * @param imageView The target ImageView to load the image into.
      */
     public void loadImage(String url, ImageView imageView) {
@@ -135,9 +146,10 @@ public class ImageLoader {
     /**
      * Load an image from a url into an ImageView using the default placeholder
      * drawable if available.
-     * @param url The web URL of an image.
+     *
+     * @param url       The web URL of an image.
      * @param imageView The target ImageView to load the image into.
-     * @param crop True to apply a center crop to the image.
+     * @param crop      True to apply a center crop to the image.
      */
     private void loadImage(String url, ImageView imageView, boolean crop) {
         loadImage(url, imageView, null, null, crop);
@@ -174,7 +186,7 @@ public class ImageLoader {
                     }
                 }
                 if (bestBucket > 0) {
-                    model = m.replaceFirst("w"+bestBucket);
+                    model = m.replaceFirst("w" + bestBucket);
                 }
             }
             return model;

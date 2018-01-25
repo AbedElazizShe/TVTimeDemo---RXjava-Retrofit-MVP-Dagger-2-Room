@@ -12,8 +12,18 @@ This is a simple Android that shows a list of Popular TV Shows;
 
 #### What's next?
 
-     - Cache Images for offline usage.
-     - Load more when offline - currently, up to 50 results are selected -.
-     - Pull to refresh.
      - Details page for each item.
+     - Add/remove to/from favorites
+     - View favorites
+
+#### Later on
+
+     - Unit testing
+     - Instrumentation testing
+
+### About
+
+     If you find issues or want me to add something specific that can help you in your projects, please email me at elaziz.shehadeh(at)gmail.com
+
+
 

@@ -1,12 +1,30 @@
 package com.samples.app.tvtimedemo.vo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Abed Elaziz Shehadeh on 20, January, 2018
  * elaziz.shehadeh@gmail.com
  */
 
 
-public class TVShow {
+public class TVShow implements Parcelable {
+
+    private List<TVShow> tvShows;
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public TVShow createFromParcel(Parcel in) {
+            return new TVShow(in);
+        }
+
+        public TVShow[] newArray(int size) {
+            return new TVShow[size];
+        }
+    };
 
     private Long id;
     private String originalName;
@@ -41,5 +59,20 @@ public class TVShow {
 
     public String getOverview() {
         return overview;
+    }
+
+    public TVShow(Parcel in) {
+        tvShows = new ArrayList<>();
+        in.readTypedList(tvShows, TVShow.CREATOR);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeTypedList(tvShows);
     }
 }
