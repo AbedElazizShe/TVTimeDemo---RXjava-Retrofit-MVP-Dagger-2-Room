@@ -33,11 +33,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private List<TVShow> data = new ArrayList<>();
     private ImageLoader imageLoader;
 
-    public RecyclerViewAdapter(List<TVShow> data, Context context) {
+    private OnItemClicked onItemClickedListener;
+
+    public RecyclerViewAdapter(List<TVShow> data, Context context, OnItemClicked onItemClickedListener) {
         this.data = data;
+        this.onItemClickedListener = onItemClickedListener;
         imageLoader = new ImageLoader(context, R.drawable.placeholder);
 
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,6 +53,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bind(data.get(position));
+        holder.itemView.setOnClickListener(view -> onItemClickedListener.onItemClickedListener(holder.getAdapterPosition()));
     }
 
     @Override
@@ -70,6 +75,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+
         }
 
         public void bind(TVShow tvShow) {
@@ -88,5 +95,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             });
             titleTextView.setText(tvShow.getOriginalName());
         }
+    }
+
+    public interface OnItemClicked{
+
+        void onItemClickedListener(int position);
     }
 }

@@ -63,10 +63,10 @@ dependencies {
 
     // Developer tools
     implementation 'com.facebook.stetho:stetho:' + project.stethoVersion
-    implementation 'com.facebook.stetho:stetho-okhttp3:'  + project.stethoVersion
+    implementation 'com.facebook.stetho:stetho-okhttp3:' + project.stethoVersion
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:' + project.leakCanaryVersion
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:' + project.leakCanaryVersion
-    testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:'  + project.leakCanaryVersion
+    testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:' + project.leakCanaryVersion
 
     // Timber
     implementation 'com.jakewharton.timber:timber:' + project.timberVersion

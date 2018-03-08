@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.samples.app.tvtimedemo.ui.activity.ItemDetailsActivity">
+
+    <include layout="@layout/toolbar_actionbar" />
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_16"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/text_size_16"
+        android:text="Title"
+        android:textAppearance="@style/ToolbarTextAppearance" />
+
+    <TextView
+        android:id="@+id/previewTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/text_size_14"
+        android:text="Title"
+        android:textAppearance="@style/ToolbarTextAppearance" />
+
+</LinearLayout>

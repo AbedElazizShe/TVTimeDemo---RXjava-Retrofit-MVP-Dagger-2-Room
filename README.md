@@ -1,5 +1,5 @@
 # TVTimeDemo
-This is a simple Android that shows a list of Popular TV Shows;
+This is a simple Android application that shows a list of Popular TV Shows;
 
      - The app is developed in Android (Java) using RXjava, Dagger2, Retrofit, Butterknife, Room, and is following MVP.
      - There will be continuous improvement from time to time.
@@ -9,10 +9,10 @@ This is a simple Android that shows a list of Popular TV Shows;
 #### Screenshots
 
 ![ScreenShot](https://raw.github.com/AbedElazizShe/TVTimeDemo/master/screenshots/main_page.PNG)
+![ScreenShot](https://raw.github.com/AbedElazizShe/TVTimeDemo/master/screenshots/item_details.PNG)
 
 #### What's next?
 
-     - Details page for each item.
      - Add/remove to/from favorites
      - View favorites
 
@@ -22,8 +22,7 @@ This is a simple Android that shows a list of Popular TV Shows;
      - Instrumentation testing
 
 ### About
-
-     If you find issues or want me to add something specific that can help you in your projects, please email me at elaziz.shehadeh(at)gmail.com
+If you find issues or want me to add something specific that can help you in your projects, please email me at elaziz.shehadeh(at)gmail.com
 
 
 

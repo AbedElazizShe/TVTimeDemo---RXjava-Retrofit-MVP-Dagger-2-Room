@@ -2,6 +2,7 @@ package com.samples.app.tvtimedemo.base;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import com.samples.app.tvtimedemo.R;
 import com.samples.app.tvtimedemo.application.App;
 import com.samples.app.tvtimedemo.di.components.ApplicationComponent;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -23,7 +25,9 @@ import butterknife.Unbinder;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private Unbinder mUnbinder;
-    private Toolbar mToolbar;
+
+    @BindView(R.id.toolbar_actionbar)
+    protected Toolbar mToolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,20 +53,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    protected ApplicationComponent getApplicationComponent(){
+    protected ApplicationComponent getApplicationComponent() {
         return ((App) getApplication()).getApplicationComponent();
     }
 
     protected void getToolbar(final int resId) {
-        if (mToolbar == null) {
-            mToolbar = findViewById(R.id.toolbar_actionbar);
-            if (mToolbar != null) {
-                setSupportActionBar(mToolbar);
-
-                mToolbar.setTitle(getResources().getString(resId));
-
-            }
-        }
+        setSupportActionBar(mToolbar);
+        if(getSupportActionBar() != null)
+        getSupportActionBar().setTitle(resId);
 
     }
 }

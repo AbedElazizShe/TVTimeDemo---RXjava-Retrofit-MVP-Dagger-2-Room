@@ -32,4 +32,9 @@ public class LocalDataSource implements LocalDataRepository {
     public void insertTVShows(TVShowsEntity tvShowsEntity) {
         mExecutor.execute(() -> mTVShowsDao.insertTVShows(tvShowsEntity));
     }
+
+    @Override
+    public LiveData<TVShowsEntity> getTVShowById(long id) {
+        return mTVShowsDao.loadTVShowById(id);
+    }
 }

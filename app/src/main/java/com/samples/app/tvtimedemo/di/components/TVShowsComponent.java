@@ -17,4 +17,5 @@ import dagger.Component;
 public interface TVShowsComponent {
 
     void inject(MainActivity mainActivity);
+
 }

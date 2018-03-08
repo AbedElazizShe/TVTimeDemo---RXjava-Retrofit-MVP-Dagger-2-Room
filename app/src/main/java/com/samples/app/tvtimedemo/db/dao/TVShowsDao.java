@@ -25,6 +25,9 @@ public interface TVShowsDao {
     @Query("select * from tv_shows order by popularity desc limit 50")
     LiveData<List<TVShowsEntity>> loadSavedTVShows();
 
+    @Query("select * from tv_shows where show_id Like :showId limit 1")
+    LiveData<TVShowsEntity> loadTVShowById(long showId);
+
 
 
 }

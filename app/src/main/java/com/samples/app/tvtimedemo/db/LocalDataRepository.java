@@ -15,4 +15,6 @@ public interface LocalDataRepository {
     LiveData<List<TVShowsEntity>> getTVShows();
 
     void insertTVShows(TVShowsEntity tvShowsEntity);
+
+    LiveData<TVShowsEntity> getTVShowById(long id);
 }

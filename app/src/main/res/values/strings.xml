@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">TVTimeDemo</string>
     <string name="home">Home</string>
+    <string name="overView">Overview</string>
 </resources>

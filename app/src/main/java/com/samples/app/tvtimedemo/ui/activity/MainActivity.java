@@ -34,13 +34,14 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import timber.log.Timber;
 
 import static com.samples.app.tvtimedemo.util.Constants.SHOWS_CURRENT_PAGE;
 import static com.samples.app.tvtimedemo.util.Constants.SHOWS_TOTAL_PAGES;
 import static com.samples.app.tvtimedemo.util.Constants.TEMP_TOKEN;
 import static com.samples.app.tvtimedemo.util.Constants.TV_SHOWS_DATA;
 
-public class MainActivity extends BaseActivity implements MainView {
+public class MainActivity extends BaseActivity implements MainView, RecyclerViewAdapter.OnItemClicked {
 
     @BindView(R.id.progressBar)
     protected ProgressBar mProgressBar;
@@ -132,7 +133,7 @@ public class MainActivity extends BaseActivity implements MainView {
         mRecyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new RecyclerViewAdapter(data, getApplicationContext());
+        mAdapter = new RecyclerViewAdapter(data, getApplicationContext(), this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -215,6 +216,11 @@ public class MainActivity extends BaseActivity implements MainView {
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.unSubscribe();
+    }
+
+    @Override
+    public void onItemClickedListener(int position) {
+        ItemDetailsActivity.start(this, data.get(position).getId());
     }
 
     @Override
