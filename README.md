@@ -9,7 +9,7 @@ This is a simple Android application that shows a list of Popular TV Shows;
 #### Screenshots
 
 ![ScreenShot](https://raw.github.com/AbedElazizShe/TVTimeDemo/master/screenshots/main_page.PNG)
-![ScreenShot](https://raw.github.com/AbedElazizShe/TVTimeDemo/master/screenshots/item_details.PNG)
+![ScreenShot](https://raw.github.com/AbedElazizShe/TVTimeDemo/master/screenshots/item_details.png)
 
 #### What's next?
 
